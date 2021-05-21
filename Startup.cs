@@ -34,6 +34,7 @@ namespace ForumDemo
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
         }
 
