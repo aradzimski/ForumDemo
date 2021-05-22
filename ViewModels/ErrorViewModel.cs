@@ -1,6 +1,6 @@
 using System;
 
-namespace ForumDemo.Models
+namespace ForumDemo.ViewModels
 {
     public class ErrorViewModel
     {
