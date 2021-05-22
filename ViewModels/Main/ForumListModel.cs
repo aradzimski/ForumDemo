@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ForumDemo.Data.Models;
 
-namespace ForumDemo.ViewModels.Forum
+namespace ForumDemo.ViewModels.Main
 {
     public class ForumListModel
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
+        public IEnumerable<Forum> ForumList { get; set; }
     }
 }

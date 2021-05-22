@@ -1,8 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ForumDemo.ViewModels.Main.ForumListModel
+
+@{
+    ViewData["Title"] = "Forum";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<table class="table table-hover">
+    <tbody>
+        @foreach (var forum in Model.ForumList) 
+        {
+            <tr>
+                <td>
+                    @forum.Title
+                </td>
+            </tr>
+            @foreach (var topic in forum.Topics)
+            {
+            <tr>
+                <td>
+                    @topic.Title
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>

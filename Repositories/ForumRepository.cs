@@ -17,9 +17,10 @@ namespace ForumDemo.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Forum>> GetAll()
+        public async Task<IEnumerable<Forum>> GetAllAsync()
         {
-            var result = await _dbContext.Forums.ToListAsync();
+            var result = await _dbContext.Forums
+                .Include(forum => forum.Topics).ToListAsync();
 
             return result;
         }

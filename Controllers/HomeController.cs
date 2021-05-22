@@ -1,4 +1,7 @@
-﻿using ForumDemo.ViewModels;
+﻿using ForumDemo.Data.Models;
+using ForumDemo.Repositories;
+using ForumDemo.ViewModels;
+using ForumDemo.ViewModels.Main;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,15 +15,21 @@ namespace ForumDemo.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ForumRepository _forumRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ForumRepository forumRepository)
         {
             _logger = logger;
+            _forumRepository = forumRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ForumListModel vm = new ForumListModel() { 
+                ForumList = await _forumRepository.GetAllAsync()
+            };
+
+            return View(vm);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

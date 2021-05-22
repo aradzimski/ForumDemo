@@ -12,6 +12,6 @@ namespace ForumDemo.Data.Models
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        public virtual IEnumerable<Post> Topics { get; set; }
+        public virtual IEnumerable<Topic> Topics { get; set; }
     }
 }
