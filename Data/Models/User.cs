@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ForumDemo.Data.Models
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<int>
     {
     }
 }
