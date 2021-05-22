@@ -1,4 +1,4 @@
-﻿using ForumDemo.Models;
+﻿using ForumDemo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
