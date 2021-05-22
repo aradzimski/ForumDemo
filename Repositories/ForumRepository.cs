@@ -17,12 +17,41 @@ namespace ForumDemo.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Forum>> GetAllAsync()
+        public async Task<IEnumerable<Forum>> GetAll()
         {
             var result = await _dbContext.Forums
-                .Include(forum => forum.Topics).ToListAsync();
+                .Include(forum => forum.Topics)
+                .ToListAsync();
 
             return result;
         }
+
+        public async Task<IEnumerable<Forum>> GetAllWithTopics()
+        {
+            var result = await _dbContext.Forums
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<Forum> GetById(int id)
+        {
+            var result = await _dbContext.Forums
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync();
+
+            return result;
+        }
+
+        public async Task<Forum> GetByIdWithTopics(int id)
+        {
+            var result = await _dbContext.Forums
+                .Where(x => x.Id == id)
+                .Include(forum => forum.Topics)
+                .SingleOrDefaultAsync();
+
+            return result;
+        }
+
     }
 }

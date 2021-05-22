@@ -1,0 +1,18 @@
+﻿@model ForumDemo.ViewModels.Main.ForumViewModel
+
+@{
+    ViewData["Title"] = Model.Forum.Title;
+}
+
+<table class="table table-hover">
+    <tbody>
+        @foreach (var topic in Model.Forum.Topics)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Home" asp-action="Topic" asp-route-id="@topic.Id">@topic.Title</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

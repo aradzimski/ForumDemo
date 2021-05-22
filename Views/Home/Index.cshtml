@@ -10,17 +10,9 @@
         {
             <tr>
                 <td>
-                    @forum.Title
+                    <a asp-controller="Home" asp-action="Forum" asp-route-id="@forum.Id">@forum.Title</a>
                 </td>
             </tr>
-            @foreach (var topic in forum.Topics)
-            {
-            <tr>
-                <td>
-                    @topic.Title
-                </td>
-            </tr>
-            }
         }
     </tbody>
 </table>
