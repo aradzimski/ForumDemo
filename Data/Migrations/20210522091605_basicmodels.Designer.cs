@@ -4,14 +4,16 @@ using ForumDemo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ForumDemo.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210522091605_basicmodels")]
+    partial class basicmodels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,6 +55,12 @@ namespace ForumDemo.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ForumId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("TopicId")
                         .HasColumnType("int");
 
@@ -63,6 +71,8 @@ namespace ForumDemo.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ForumId");
 
                     b.HasIndex("TopicId");
 
@@ -85,9 +95,6 @@ namespace ForumDemo.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ForumId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OriginPostId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -310,6 +317,10 @@ namespace ForumDemo.Data.Migrations
 
             modelBuilder.Entity("ForumDemo.Data.Models.Post", b =>
                 {
+                    b.HasOne("ForumDemo.Data.Models.Forum", null)
+                        .WithMany("Topics")
+                        .HasForeignKey("ForumId");
+
                     b.HasOne("ForumDemo.Data.Models.Topic", "Topic")
                         .WithMany("Posts")
                         .HasForeignKey("TopicId");
@@ -326,7 +337,7 @@ namespace ForumDemo.Data.Migrations
             modelBuilder.Entity("ForumDemo.Data.Models.Topic", b =>
                 {
                     b.HasOne("ForumDemo.Data.Models.Forum", "Forum")
-                        .WithMany("Topics")
+                        .WithMany()
                         .HasForeignKey("ForumId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")

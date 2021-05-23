@@ -1,0 +1,23 @@
+﻿@model ForumDemo.ViewModels.Main.TopicViewModel
+
+@{
+    ViewData["Title"] = Model.Topic.Title;
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <a asp-controller="Home" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
+}
+
+<table class="table table-hover">
+    <tbody>
+        @foreach (var post in Model.Topic.Posts)
+        {
+            <tr>
+                <td>
+                    @post.Contents
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,4 +1,5 @@
 using ForumDemo.Data;
+using ForumDemo.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,7 +35,12 @@ namespace ForumDemo
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
+
+            services.AddTransient<ForumRepository>();
+            services.AddTransient<TopicRepository>();
+            services.AddTransient<PostRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
