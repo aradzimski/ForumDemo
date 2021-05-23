@@ -1,7 +1,7 @@
 ﻿@model ForumDemo.ViewModels.Main.ReplyViewModel
 
 @{
-    ViewData["Title"] = "Replying - " + Model.TopicTitle;
+    ViewData["Title"] = "Reply - " + Model.TopicTitle;
 }
 
 <a asp-controller="Home" asp-action="Topic" asp-route-id="@Model.TopicId">Back to topic</a>
