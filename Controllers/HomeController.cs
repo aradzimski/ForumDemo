@@ -16,11 +16,13 @@ namespace ForumDemo.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ForumRepository _forumRepository;
+        private readonly TopicRepository _topicRepository;
 
-        public HomeController(ILogger<HomeController> logger, ForumRepository forumRepository)
+        public HomeController(ILogger<HomeController> logger, ForumRepository forumRepository, TopicRepository topicRepository)
         {
             _logger = logger;
             _forumRepository = forumRepository;
+            _topicRepository = topicRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -37,6 +39,16 @@ namespace ForumDemo.Controllers
             ForumViewModel vm = new ForumViewModel()
             {
                 Forum = await _forumRepository.GetByIdWithTopics(id)
+            };
+
+            return View(vm);
+        }
+
+        public async Task<IActionResult> Topic(int id)
+        {
+            TopicViewModel vm = new TopicViewModel()
+            {
+                Topic = await _topicRepository.GetByIdWithPosts(id)
             };
 
             return View(vm);

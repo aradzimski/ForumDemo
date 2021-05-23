@@ -1,0 +1,18 @@
+﻿@model ForumDemo.ViewModels.Main.TopicViewModel
+
+@{
+    ViewData["Title"] = Model.Topic.Title;
+}
+
+<table class="table table-hover">
+    <tbody>
+        @foreach (var post in Model.Topic.Posts)
+        {
+            <tr>
+                <td>
+                    @post.Contents
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
