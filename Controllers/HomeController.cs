@@ -28,7 +28,7 @@ namespace ForumDemo.Controllers
         public async Task<IActionResult> Index()
         {
             ForumListModel vm = new ForumListModel() {
-                ForumList = await _forumRepository.GetAll()
+                ForumList = await _forumRepository.GetAllWithTopics()
             };
 
             return View(vm);

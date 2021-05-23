@@ -20,7 +20,6 @@ namespace ForumDemo.Repositories
         public async Task<IEnumerable<Forum>> GetAll()
         {
             var result = await _dbContext.Forums
-                .Include(forum => forum.Topics)
                 .ToListAsync();
 
             return result;
@@ -29,6 +28,7 @@ namespace ForumDemo.Repositories
         public async Task<IEnumerable<Forum>> GetAllWithTopics()
         {
             var result = await _dbContext.Forums
+                .Include(forum => forum.Topics)
                 .ToListAsync();
 
             return result;
