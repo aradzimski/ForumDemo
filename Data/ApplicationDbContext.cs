@@ -14,6 +14,7 @@ namespace ForumDemo.Data
         {
         }
 
+        public DbSet<User> User { get; set; }
         public DbSet<Forum> Forums { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Post> Posts { get; set; }
