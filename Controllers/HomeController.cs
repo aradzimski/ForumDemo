@@ -19,14 +19,16 @@ namespace ForumDemo.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<User> _userManager;
+        private readonly UserRepository _userRepository;
         private readonly ForumRepository _forumRepository;
         private readonly TopicRepository _topicRepository;
         private readonly PostRepository _postRepository;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<User> userManager, ForumRepository forumRepository, TopicRepository topicRepository, PostRepository postRepository)
+        public HomeController(ILogger<HomeController> logger, UserManager<User> userManager,UserRepository userRepository, ForumRepository forumRepository, TopicRepository topicRepository, PostRepository postRepository)
         {
             _logger = logger;
             _userManager = userManager;
+            _userRepository = userRepository;
             _forumRepository = forumRepository;
             _topicRepository = topicRepository;
             _postRepository = postRepository;
@@ -77,14 +79,17 @@ namespace ForumDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Reply(ReplyViewModel vm)
         {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+
             Post post = new Post()
             {
                 Contents = vm.Contents,
                 Topic = await _topicRepository.GetById(vm.TopicId),
-                User = await _userManager.GetUserAsync(HttpContext.User)
+                User = user
             };
 
             await _postRepository.Create(post);
+            await _userRepository.CountPost(user.Id);
 
             return RedirectToAction("Topic", new { id = vm.TopicId });
         }

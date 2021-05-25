@@ -39,6 +39,7 @@ namespace ForumDemo
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
 
+            services.AddTransient<UserRepository>();
             services.AddTransient<ForumRepository>();
             services.AddTransient<TopicRepository>();
             services.AddTransient<PostRepository>();
