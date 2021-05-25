@@ -13,14 +13,17 @@
     <tbody>
         @foreach (var post in Model.Topic.Posts)
         {
-            <tr>
-                <td>
-                    @post.Contents
-                </td>
-                <td>
-                    @post.User.UserName
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @post.Contents
+            </td>
+            <td>
+                @post.User.UserName
+            </td>
+            <td>
+                
+            </td>
+        </tr>
         }
     </tbody>
 </table>
