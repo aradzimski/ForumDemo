@@ -62,16 +62,11 @@ namespace ForumDemo.Data.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("TopicId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Posts");
                 });
@@ -104,16 +99,11 @@ namespace ForumDemo.Data.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ForumId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Topics");
                 });
@@ -181,10 +171,6 @@ namespace ForumDemo.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -236,8 +222,6 @@ namespace ForumDemo.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -324,13 +308,6 @@ namespace ForumDemo.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ForumDemo.Data.Models.User", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.HasDiscriminator().HasValue("User");
-                });
-
             modelBuilder.Entity("ForumDemo.Data.Models.Post", b =>
                 {
                     b.HasOne("ForumDemo.Data.Models.Topic", "Topic")
@@ -340,10 +317,6 @@ namespace ForumDemo.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.HasOne("ForumDemo.Data.Models.User", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("Topic");
 
@@ -359,10 +332,6 @@ namespace ForumDemo.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-
-                    b.HasOne("ForumDemo.Data.Models.User", null)
-                        .WithMany("Topics")
-                        .HasForeignKey("UserId1");
 
                     b.Navigation("Forum");
 
@@ -428,13 +397,6 @@ namespace ForumDemo.Data.Migrations
             modelBuilder.Entity("ForumDemo.Data.Models.Topic", b =>
                 {
                     b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("ForumDemo.Data.Models.User", b =>
-                {
-                    b.Navigation("Posts");
-
-                    b.Navigation("Topics");
                 });
 #pragma warning restore 612, 618
         }
