@@ -27,9 +27,6 @@ namespace ForumDemo.Repositories
 
         public async Task Create(Post post)
         {
-            post.Created = DateTime.Now;
-            post.Updated = DateTime.Now;
-
             await _dbContext.Posts.AddAsync(post);
             await _dbContext.SaveChangesAsync();
         }

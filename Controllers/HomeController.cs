@@ -128,7 +128,9 @@ namespace ForumDemo.Controllers
             {
                 Contents = vm.Contents,
                 Topic = await _topicRepository.GetById(vm.TopicId),
-                User = user
+                User = user,
+                Created = DateTime.Now,
+                Updated = DateTime.Now
             };
 
             await _postRepository.Create(post);
