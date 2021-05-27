@@ -53,5 +53,15 @@ namespace ForumDemo.Repositories
             return result;
         }
 
+        public async Task<string> GetTitleById(int id)
+        {
+            var result = await _dbContext.Forums
+                .Where(x => x.Id == id)
+                .Select(x => x.Title)
+                .SingleOrDefaultAsync();
+
+            return result;
+        }
+
     }
 }

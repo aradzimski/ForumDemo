@@ -4,6 +4,11 @@
     ViewData["Title"] = Model.Forum.Title;
 }
 
+@if (User.Identity.IsAuthenticated)
+{
+    <a asp-controller="Home" asp-action="CreateTopic" asp-route-id="@Model.Forum.Id">Create topic</a>
+}
+
 <table class="table table-hover">
     <tbody>
         @foreach (var topic in Model.Forum.Topics)

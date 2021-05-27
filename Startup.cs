@@ -1,4 +1,5 @@
 using ForumDemo.Data;
+using ForumDemo.Data.Models;
 using ForumDemo.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,11 +34,12 @@ namespace ForumDemo
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
 
+            services.AddTransient<UserRepository>();
             services.AddTransient<ForumRepository>();
             services.AddTransient<TopicRepository>();
             services.AddTransient<PostRepository>();

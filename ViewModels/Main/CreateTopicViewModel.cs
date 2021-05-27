@@ -7,10 +7,18 @@ using System.Threading.Tasks;
 
 namespace ForumDemo.ViewModels.Main
 {
-    public class ReplyViewModel
+    public class CreateTopicViewModel
     {
-        public int TopicId { get; set; }
-        public string TopicTitle { get; set; }
+        public int ForumId { get; set; }
+        public string ForumTitle { get; set; }
+
+        [Display(Name="Topic title")]
+        [Required]
+        [MinLength(2)]
+        public string Title { get; set; }
+
+        [Display(Name = "Topic description")]
+        public string Description { get; set; }
 
         [Display(Name = "Post contents")]
         [Required]

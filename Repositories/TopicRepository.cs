@@ -29,6 +29,7 @@ namespace ForumDemo.Repositories
         {
             var result = await _dbContext.Topics
                 .Include(topic => topic.Posts)
+                .ThenInclude(post => post.User)
                 .ToListAsync();
 
             return result;
@@ -48,6 +49,7 @@ namespace ForumDemo.Repositories
             var result = await _dbContext.Topics
                 .Where(x => x.Id == id)
                 .Include(topic => topic.Posts)
+                .ThenInclude(post => post.User)
                 .SingleOrDefaultAsync();
 
             return result;
@@ -61,6 +63,15 @@ namespace ForumDemo.Repositories
                 .SingleOrDefaultAsync();
 
             return result;
+        }
+
+        public async Task<int> Create(Topic topic)
+        {
+            await _dbContext.Topics.AddAsync(topic);
+            await _dbContext.SaveChangesAsync();
+
+            // Return Id of the topic we have just created for post attaching purpose
+            return topic.Id;
         }
 
     }

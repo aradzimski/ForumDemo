@@ -13,11 +13,16 @@
     <tbody>
         @foreach (var post in Model.Topic.Posts)
         {
-            <tr>
-                <td>
-                    @post.Contents
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @post.User.UserName
+                <br />
+                Posts: @post.User.PostCounter
+            </td>
+            <td>
+                @post.Contents
+            </td>
+        </tr>
         }
     </tbody>
 </table>
