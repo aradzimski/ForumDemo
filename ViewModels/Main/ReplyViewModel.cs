@@ -13,6 +13,7 @@ namespace ForumDemo.ViewModels.Main
         public string TopicTitle { get; set; }
 
         [Display(Name = "Post contents")]
+        [Required]
         [MinLength(2)]
         public string Contents { get; set; }
     }
