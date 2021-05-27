@@ -65,5 +65,14 @@ namespace ForumDemo.Repositories
             return result;
         }
 
+        public async Task<int> Create(Topic topic)
+        {
+            await _dbContext.Topics.AddAsync(topic);
+            await _dbContext.SaveChangesAsync();
+
+            // Return Id of the topic we have just created for post attaching purpose
+            return topic.Id;
+        }
+
     }
 }

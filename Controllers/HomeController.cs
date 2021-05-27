@@ -64,6 +64,49 @@ namespace ForumDemo.Controllers
         }
 
         [Authorize]
+        public async Task<IActionResult> CreateTopic(int id)
+        {
+            CreateTopicViewModel vm = new CreateTopicViewModel()
+            {
+                ForumId = id,
+                ForumTitle = await _forumRepository.GetTitleById(id)
+            };
+
+            return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateTopic(CreateTopicViewModel vm)
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+
+            Topic topic = new Topic()
+            {
+                Title = vm.Title,
+                Description = vm.Description,
+                Forum = await _forumRepository.GetById(vm.ForumId),
+                Posts = new List<Post>
+                {
+                    new Post {
+                        Contents = vm.Contents,
+                        User = user,
+                        Created = DateTime.Now,
+                        Updated = DateTime.Now
+                    }
+                },
+                User = user,
+                Created = DateTime.Now,
+                Updated = DateTime.Now
+            };
+
+            int topic_id = await _topicRepository.Create(topic);
+            await _userRepository.CountPost(user.Id);
+
+            return RedirectToAction("Topic", new { id = topic_id });
+        }
+
+        [Authorize]
         public async Task<IActionResult> Reply(int id)
         {
             ReplyViewModel vm = new ReplyViewModel()
