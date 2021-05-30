@@ -8,10 +8,20 @@
     ViewData["Title"] = Model.Topic.Title;
 }
 
-@if (User.Identity.IsAuthenticated)
-{
-    <a asp-controller="Home" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
-}
+<div class="topic-header">
+    <h1 class="topic-header-title">@Model.Topic.Title</h1>
+</div>
+
+<div class="topic-button-menu">
+    <ul class="topic-button-list">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li class="topic-button-container">
+                <a class="topic-button-reply" asp-controller="Home" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
+            </li>
+        }
+    </ul>
+</div>
 
 <div class="posts-container">
     @foreach (var post in Model.Topic.Posts)
@@ -33,7 +43,7 @@
                 <div class="post-footer">
                     @if (User.Identity.IsAuthenticated && post.User.UserName == User.Identity.Name)
                     {
-                        <a asp-controller="Home" asp-action="EditPost" asp-route-id="@post.Id">Edit</a>
+                        <a class="post-footer-button" asp-controller="Home" asp-action="EditPost" asp-route-id="@post.Id">Edit</a>
                     }
                 </div>
             </div>
