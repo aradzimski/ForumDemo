@@ -22,13 +22,18 @@
             <td>
                 @post.Contents
             </td>
-            @if (User.Identity.IsAuthenticated && post.User.UserName == User.Identity.Name)
+            <td>
+                @if (User.Identity.IsAuthenticated && post.User.UserName == User.Identity.Name)
                 {
-                    <td>
-                        <a asp-controller="Home" asp-action="EditPost" asp-route-id="@post.Id">Edit</a>
-                    </td>
+
+                    <a asp-controller="Home" asp-action="EditPost" asp-route-id="@post.Id">Edit</a>
+
                 }
-        </tr>
+            </td>
+            <td>
+                @post.Created
+            </td>
+            </tr>
         }
     </tbody>
 </table>
