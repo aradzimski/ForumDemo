@@ -1,0 +1,52 @@
+﻿/* Container */
+
+.posts-container {
+    margin-top: 15px;
+}
+
+/* Posts */
+
+.post {
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+    background: rgb(240,240,240);
+    margin-bottom: 15px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.post-authorpanel {
+    display: table-cell;
+    width: 180px;
+    padding: 10px;
+    text-align: center;
+}
+
+.post-contentscolumn {
+    display: table-cell;
+    width: 100%;
+    vertical-align: top;
+}
+
+.post-author-username {
+    font-size: 22px;
+}
+
+.post-author-info {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.post-creationdate {
+    padding: 10px 0 10px;
+}
+
+.post-contents {
+    padding: 0px 15px 15px 0px;
+}
+
+.post-footer {
+
+}
