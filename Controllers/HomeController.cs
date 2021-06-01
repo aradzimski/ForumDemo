@@ -155,7 +155,7 @@ namespace ForumDemo.Controllers
                 OverwriteTitleOnExactMatch = true,
                 Parent = childNode1
             };
-            var childNode3 = new MvcBreadcrumbNode("Reply", "Home", "Replying")
+            var childNode3 = new MvcBreadcrumbNode("Reply", "Home", "Reply")
             {
                 RouteValues = new { id = vm.Topic.Id },
                 OverwriteTitleOnExactMatch = true,
