@@ -14,10 +14,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SmartBreadcrumbs.Attributes;
 
 namespace ForumDemo.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
+    [Breadcrumb("Register")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
