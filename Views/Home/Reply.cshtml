@@ -1,13 +1,13 @@
 ﻿@model ForumDemo.ViewModels.Main.ReplyViewModel
 
 @{
-    ViewData["Title"] = "Reply - " + Model.TopicTitle;
+    ViewData["Title"] = "Reply - " + Model.Topic.Title;
 }
 
-<a asp-controller="Home" asp-action="Topic" asp-route-id="@Model.TopicId">Back to topic</a>
+<a asp-controller="Home" asp-action="Topic" asp-route-id="@Model.Topic.Id">Back to topic</a>
 
 <form asp-action="Reply" method="post">
-    <input hidden asp-for="TopicId" />
+    <input hidden asp-for="Topic.Id" />
     <label asp-for="Contents"></label>
     <textarea asp-for="Contents"></textarea>
     <button type="submit">Send</button>

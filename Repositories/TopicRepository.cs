@@ -39,6 +39,7 @@ namespace ForumDemo.Repositories
         {
             var result = await _dbContext.Topics
                 .Where(x => x.Id == id)
+                .Include(topic => topic.Forum)
                 .SingleOrDefaultAsync();
 
             return result;
@@ -48,6 +49,7 @@ namespace ForumDemo.Repositories
         {
             var result = await _dbContext.Topics
                 .Where(x => x.Id == id)
+                .Include(topic => topic.Forum)
                 .Include(topic => topic.Posts)
                 .ThenInclude(post => post.User)
                 .SingleOrDefaultAsync();

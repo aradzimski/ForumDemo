@@ -9,8 +9,7 @@ namespace ForumDemo.ViewModels.Main
 {
     public class CreateTopicViewModel
     {
-        public int ForumId { get; set; }
-        public string ForumTitle { get; set; }
+        public Forum Forum { get; set; }
 
         [Display(Name="Topic title")]
         [Required]

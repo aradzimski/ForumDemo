@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SmartBreadcrumbs.Attributes;
+using SmartBreadcrumbs.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,6 +36,7 @@ namespace ForumDemo.Controllers
             _postRepository = postRepository;
         }
 
+        [DefaultBreadcrumb("ForumDemo")]
         public async Task<IActionResult> Index()
         {
             ForumListModel vm = new ForumListModel() {
@@ -43,6 +46,7 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
+        [Breadcrumb("ViewData.Title")]
         public async Task<IActionResult> Forum(int id)
         {
             ForumViewModel vm = new ForumViewModel()
@@ -60,6 +64,19 @@ namespace ForumDemo.Controllers
                 Topic = await _topicRepository.GetByIdWithPosts(id)
             };
 
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Topic.Forum.Title)
+            {
+                RouteValues = new { id = vm.Topic.Forum.Id}
+            };
+            var childNode2 = new MvcBreadcrumbNode("Topic", "Home", "ViewData.Title")
+            {
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+
+            ViewData["BreadcrumbNode"] = childNode2;
+
             return View(vm);
         }
 
@@ -68,9 +85,22 @@ namespace ForumDemo.Controllers
         {
             CreateTopicViewModel vm = new CreateTopicViewModel()
             {
-                ForumId = id,
-                ForumTitle = await _forumRepository.GetTitleById(id)
+                Forum = await _forumRepository.GetById(id)
             };
+
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Forum.Title)
+            {
+                RouteValues = new { id = vm.Forum.Id }
+            };
+            var childNode2 = new MvcBreadcrumbNode("CreateTopic", "Home", "Creating topic")
+            {
+                RouteValues = new { id = vm.Forum.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+
+            ViewData["BreadcrumbNode"] = childNode2;
 
             return View(vm);
         }
@@ -85,7 +115,7 @@ namespace ForumDemo.Controllers
             {
                 Title = vm.Title,
                 Description = vm.Description,
-                Forum = await _forumRepository.GetById(vm.ForumId),
+                Forum = await _forumRepository.GetById(vm.Forum.Id),
                 Posts = new List<Post>
                 {
                     new Post {
@@ -111,9 +141,28 @@ namespace ForumDemo.Controllers
         {
             ReplyViewModel vm = new ReplyViewModel()
             {
-                TopicId = id,
-                TopicTitle = await _topicRepository.GetTitleById(id)
+                Topic =  await _topicRepository.GetById(id)
             };
+
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Topic.Forum.Title)
+            {
+                RouteValues = new { id = vm.Topic.Forum.Id }
+            };
+            var childNode2 = new MvcBreadcrumbNode("Topic", "Home", vm.Topic.Title)
+            {
+                RouteValues = new { id = vm.Topic.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+            var childNode3 = new MvcBreadcrumbNode("Reply", "Home", "Replying")
+            {
+                RouteValues = new { id = vm.Topic.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode2
+            };
+
+            ViewData["BreadcrumbNode"] = childNode3;
 
             return View(vm);
         }
@@ -127,7 +176,7 @@ namespace ForumDemo.Controllers
             Post post = new Post()
             {
                 Contents = vm.Contents,
-                Topic = await _topicRepository.GetById(vm.TopicId),
+                Topic = await _topicRepository.GetById(vm.Topic.Id),
                 User = user,
                 Created = DateTime.Now,
                 Updated = DateTime.Now
@@ -136,7 +185,7 @@ namespace ForumDemo.Controllers
             await _postRepository.Create(post);
             await _userRepository.CountPost(user.Id);
 
-            return RedirectToAction("Topic", new { id = vm.TopicId });
+            return RedirectToAction("Topic", new { id = vm.Topic.Id });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

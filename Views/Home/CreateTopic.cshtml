@@ -1,13 +1,13 @@
 ﻿@model ForumDemo.ViewModels.Main.CreateTopicViewModel
 
 @{
-    ViewData["Title"] = "Creating topic - " + Model.ForumTitle;
+    ViewData["Title"] = "Creating topic - " + Model.Forum.Title;
 }
 
-<a asp-controller="Home" asp-action="Forum" asp-route-id="@Model.ForumId">Back to forum</a>
+<a asp-controller="Home" asp-action="Forum" asp-route-id="@Model.Forum.Id">Back to forum</a>
 
 <form asp-action="CreateTopic" method="post">
-    <input hidden asp-for="ForumId" />
+    <input hidden asp-for="Forum.Id" />
     <label asp-for="Title"></label>
     <input asp-for="Title"/>
     <label asp-for="Description"></label>

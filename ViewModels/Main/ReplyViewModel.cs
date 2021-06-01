@@ -9,8 +9,7 @@ namespace ForumDemo.ViewModels.Main
 {
     public class ReplyViewModel
     {
-        public int TopicId { get; set; }
-        public string TopicTitle { get; set; }
+        public Topic Topic { get; set; }
 
         [Display(Name = "Post contents")]
         [Required]
