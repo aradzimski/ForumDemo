@@ -43,11 +43,11 @@ namespace ForumDemo
             services.AddBreadcrumbs(GetType().Assembly, options =>
             {
                 options.TagName = "nav";
-                options.TagClasses = "";
+                options.TagClasses = "breadcrumbs-container";
                 options.OlClasses = "breadcrumb";
                 options.LiClasses = "breadcrumb-item";
                 options.ActiveLiClasses = "breadcrumb-item active";
-                options.SeparatorElement = "<li class=\"separator\">/</li>";
+                options.SeparatorElement = "<li class=\"breadcrumb-separator\">></li>";
             });
 
             services.AddTransient<UserRepository>();

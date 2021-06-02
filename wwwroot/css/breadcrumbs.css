@@ -1,0 +1,25 @@
+﻿.breadcrumbs-container {
+    font-size: 14px;
+}
+
+.breadcrumb {
+    background: none;
+    padding-left: 1px;
+}
+
+.breadcrumb-item {
+
+}
+
+.breadcrumb-item a {
+    color: #9a9a9a;
+}
+
+.breadcrumb-item.active {
+    color: #bfbfbf;
+}
+
+.breadcrumb-separator {
+    margin-left: 3px;
+    margin-right: 3px;
+}
