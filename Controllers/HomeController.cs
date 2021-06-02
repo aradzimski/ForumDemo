@@ -1,5 +1,6 @@
 ﻿using ForumDemo.Data.Models;
 using ForumDemo.Repositories;
+using ForumDemo.Tools;
 using ForumDemo.ViewModels;
 using ForumDemo.ViewModels.Main;
 using Microsoft.AspNetCore.Authorization;
@@ -57,11 +58,16 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> Topic(int id)
+        public async Task<IActionResult> Topic(int id, int? page)
         {
+            // Pagination
+
+            int pageSize = 20;
+
             TopicViewModel vm = new TopicViewModel()
             {
-                Topic = await _topicRepository.GetByIdWithPosts(id)
+                Topic = await _topicRepository.GetById(id),
+                Posts = await _topicRepository.GetByIdWithPosts(id, page ?? 1, pageSize)
             };
 
             // Manually set breadcrumb nodes

@@ -24,6 +24,34 @@
     </ul>
 </div>
 
+@{
+    var prevDisabled = !Model.Posts.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Posts.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Topic"
+   asp-route-id="@Model.Topic.Id"
+   asp-route-page="@(Model.Posts.PageIndex - 1)"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+
+@for(int p = 1; p <= Model.Posts.TotalPages; p++)
+{
+<a asp-action="Topic"
+   asp-route-id="@Model.Topic.Id"
+   asp-route-page=@p>
+    @p
+</a>
+}
+
+<a asp-action="Topic"
+   asp-route-id="@Model.Topic.Id"
+   asp-route-page="@(Model.Posts.PageIndex + 1)"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
 <div class="posts-container">
     @foreach (var post in Model.Topic.Posts)
     {
