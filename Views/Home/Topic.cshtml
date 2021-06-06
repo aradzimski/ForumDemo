@@ -6,9 +6,6 @@
 
 @{
     ViewData["Title"] = Model.Topic.Title;
-
-    var prevDisabled = !Model.Posts.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.Posts.HasNextPage ? "disabled" : "";
 }
 
 <div class="topic-header">
