@@ -16,17 +16,6 @@
     <h3 class="topic-header-description">@Model.Topic.Description</h3>
 </div>
 
-<div class="topic-button-menu">
-    <ul class="topic-button-list">
-        @if (User.Identity.IsAuthenticated)
-        {
-            <li class="topic-button-container">
-                <a class="topic-button-reply" asp-controller="Home" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
-            </li>
-        }
-    </ul>
-</div>
-
 <ul class="topic-pagination-list">
     @* Show "go to first page" button if there is a previous page *@
 
@@ -123,7 +112,18 @@
             </a>
         </li>
     }
-</ul>    
+</ul>
+
+<div class="topic-button-menu">
+    <ul class="topic-button-list">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <li class="topic-button-container">
+                <a class="topic-button-reply" asp-controller="Home" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
+            </li>
+        }
+    </ul>
+</div>    
 
 <div class="posts-container">
     @foreach (var post in Model.Topic.Posts)
