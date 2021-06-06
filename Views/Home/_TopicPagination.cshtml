@@ -1,97 +1,100 @@
-﻿<ul class="topic-pagination-list">
-    @* Show "go to first page" button if there is a previous page *@
+﻿@if (Model.Posts.TotalPages > 1)
+{
+    <ul class="topic-pagination-list">
+        @* Show "go to first page" button if there is a previous page *@
 
-    @if (Model.Posts.HasPreviousPage == true)
-    {
-        <li class="topic-pagination-button">
-            <a asp-action="Topic"
-               asp-route-id="@Model.Topic.Id"
-               asp-route-page="1">
-                &lt;&lt;
-            </a>
-        </li>
-    }
-
-    @* Show "go to previous page" button if there is a previous page *@
-
-    @if (Model.Posts.HasPreviousPage == true)
-    {
-        <li class="topic-pagination-button">
-            <a asp-action="Topic"
-               asp-route-id="@Model.Topic.Id"
-               asp-route-page="@(Model.Posts.PageIndex - 1)">
-                Previous
-            </a>
-        </li>
-    }
-
-    @* Show up to 5 buttons for previous pages *@
-
-    @for (int previous_page_button = 5; previous_page_button >= 1; previous_page_button--)
-    {
-        if (Model.Posts.PageIndex - previous_page_button >= 1)
+        @if (Model.Posts.HasPreviousPage == true)
         {
             <li class="topic-pagination-button">
                 <a asp-action="Topic"
                    asp-route-id="@Model.Topic.Id"
-                   asp-route-page="@(Model.Posts.PageIndex - previous_page_button)">
-                    @(Model.Posts.PageIndex - previous_page_button)
+                   asp-route-page="1">
+                    &lt;&lt;
                 </a>
             </li>
         }
-    }
 
-    @* Show the current page button *@
+        @* Show "go to previous page" button if there is a previous page *@
 
-    <li class="topic-pagination-button">
-        <a class="current-page"
-           asp-action="Topic"
-           asp-route-id="@Model.Topic.Id"
-           asp-route-page="@Model.Posts.PageIndex">
-            @Model.Posts.PageIndex
-        </a>
-    </li>
-
-    @* Show up to 5 buttons for next pages *@
-
-    @for (int next_page_button = 1; next_page_button <= 5; next_page_button++)
-    {
-        if (Model.Posts.PageIndex + next_page_button <= Model.Posts.TotalPages)
+        @if (Model.Posts.HasPreviousPage == true)
         {
             <li class="topic-pagination-button">
                 <a asp-action="Topic"
                    asp-route-id="@Model.Topic.Id"
-                   asp-route-page="@(Model.Posts.PageIndex + next_page_button)">
-                    @(Model.Posts.PageIndex + next_page_button)
+                   asp-route-page="@(Model.Posts.PageIndex - 1)">
+                    Previous
                 </a>
             </li>
         }
-        else { break; }
-    }
 
-    @* Show "go to next page" button if there is a next page *@
+        @* Show up to 5 buttons for previous pages *@
 
-    @if (Model.Posts.HasNextPage == true)
-    {
+        @for (int previous_page_button = 5; previous_page_button >= 1; previous_page_button--)
+        {
+            if (Model.Posts.PageIndex - previous_page_button >= 1)
+            {
+                <li class="topic-pagination-button">
+                    <a asp-action="Topic"
+                       asp-route-id="@Model.Topic.Id"
+                       asp-route-page="@(Model.Posts.PageIndex - previous_page_button)">
+                        @(Model.Posts.PageIndex - previous_page_button)
+                    </a>
+                </li>
+            }
+        }
+
+        @* Show the current page button *@
+
         <li class="topic-pagination-button">
-            <a asp-action="Topic"
+            <a class="current-page"
+               asp-action="Topic"
                asp-route-id="@Model.Topic.Id"
-               asp-route-page="@(Model.Posts.PageIndex + 1)">
-                Next
+               asp-route-page="@Model.Posts.PageIndex">
+                @Model.Posts.PageIndex
             </a>
         </li>
-    }
 
-    @* Show "go to last page" button if there is a next page *@
+        @* Show up to 5 buttons for next pages *@
 
-    @if (Model.Posts.HasNextPage == true)
-    {
-        <li class="topic-pagination-button">
-            <a asp-action="Topic"
-               asp-route-id="@Model.Topic.Id"
-               asp-route-page="@Model.Posts.TotalPages">
-                &gt;&gt;
-            </a>
-        </li>
-    }
-</ul>
+        @for (int next_page_button = 1; next_page_button <= 5; next_page_button++)
+        {
+            if (Model.Posts.PageIndex + next_page_button <= Model.Posts.TotalPages)
+            {
+                <li class="topic-pagination-button">
+                    <a asp-action="Topic"
+                       asp-route-id="@Model.Topic.Id"
+                       asp-route-page="@(Model.Posts.PageIndex + next_page_button)">
+                        @(Model.Posts.PageIndex + next_page_button)
+                    </a>
+                </li>
+            }
+            else { break; }
+        }
+
+        @* Show "go to next page" button if there is a next page *@
+
+        @if (Model.Posts.HasNextPage == true)
+        {
+            <li class="topic-pagination-button">
+                <a asp-action="Topic"
+                   asp-route-id="@Model.Topic.Id"
+                   asp-route-page="@(Model.Posts.PageIndex + 1)">
+                    Next
+                </a>
+            </li>
+        }
+
+        @* Show "go to last page" button if there is a next page *@
+
+        @if (Model.Posts.HasNextPage == true)
+        {
+            <li class="topic-pagination-button">
+                <a asp-action="Topic"
+                   asp-route-id="@Model.Topic.Id"
+                   asp-route-page="@Model.Posts.TotalPages">
+                    &gt;&gt;
+                </a>
+            </li>
+        }
+    </ul>
+}
