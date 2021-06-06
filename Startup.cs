@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SmartBreadcrumbs.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,16 @@ namespace ForumDemo
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllersWithViews();
+
+            services.AddBreadcrumbs(GetType().Assembly, options =>
+            {
+                options.TagName = "nav";
+                options.TagClasses = "breadcrumbs-container";
+                options.OlClasses = "breadcrumb";
+                options.LiClasses = "breadcrumb-item";
+                options.ActiveLiClasses = "breadcrumb-item active";
+                options.SeparatorElement = "<li class=\"breadcrumb-separator\">></li>";
+            });
 
             services.AddTransient<UserRepository>();
             services.AddTransient<ForumRepository>();
@@ -72,6 +83,9 @@ namespace ForumDemo
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "postpagination",
+                    pattern: "{controller=Home}/{action=Topic}/{id}/page/{page?}");
                 endpoints.MapRazorPages();
             });
         }

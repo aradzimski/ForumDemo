@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - ForumDemo</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/breadcrumbs.css" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
@@ -29,6 +31,7 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            <breadcrumb></breadcrumb>
             @RenderBody()
         </main>
     </div>

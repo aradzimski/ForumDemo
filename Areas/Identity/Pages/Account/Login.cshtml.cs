@@ -12,10 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ForumDemo.Data.Models;
+using SmartBreadcrumbs.Attributes;
 
 namespace ForumDemo.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
+    [Breadcrumb("Login")]
     public class LoginModel : PageModel
     {
         private readonly UserManager<User> _userManager;

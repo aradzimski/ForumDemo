@@ -1,5 +1,6 @@
 ﻿using ForumDemo.Data;
 using ForumDemo.Data.Models;
+using ForumDemo.Tools;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -39,18 +40,17 @@ namespace ForumDemo.Repositories
         {
             var result = await _dbContext.Topics
                 .Where(x => x.Id == id)
+                .Include(topic => topic.Forum)
                 .SingleOrDefaultAsync();
 
             return result;
         }
 
-        public async Task<Topic> GetByIdWithPosts(int id)
+        public async Task<PaginatedList<Post>> GetByIdWithPosts(int id, int page, int pageSize)
         {
-            var result = await _dbContext.Topics
-                .Where(x => x.Id == id)
-                .Include(topic => topic.Posts)
-                .ThenInclude(post => post.User)
-                .SingleOrDefaultAsync();
+            var result = await PaginatedList<Post>.CreateAsync(_dbContext.Posts
+                .Where(x => x.Topic.Id == id)
+                .Include(x => x.User), page, pageSize);
 
             return result;
         }

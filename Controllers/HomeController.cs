@@ -1,5 +1,6 @@
 ﻿using ForumDemo.Data.Models;
 using ForumDemo.Repositories;
+using ForumDemo.Tools;
 using ForumDemo.ViewModels;
 using ForumDemo.ViewModels.Main;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SmartBreadcrumbs.Attributes;
+using SmartBreadcrumbs.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,6 +37,13 @@ namespace ForumDemo.Controllers
             _postRepository = postRepository;
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [DefaultBreadcrumb("ForumDemo")]
         public async Task<IActionResult> Index()
         {
             ForumListModel vm = new ForumListModel() {
@@ -43,6 +53,7 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
+        [Breadcrumb("ViewData.Title")]
         public async Task<IActionResult> Forum(int id)
         {
             ForumViewModel vm = new ForumViewModel()
@@ -53,12 +64,30 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> Topic(int id)
+        public async Task<IActionResult> Topic(int id, int? page)
         {
+            // Pagination
+
+            int pageSize = 20;
+
             TopicViewModel vm = new TopicViewModel()
             {
-                Topic = await _topicRepository.GetByIdWithPosts(id)
+                Topic = await _topicRepository.GetById(id),
+                Posts = await _topicRepository.GetByIdWithPosts(id, page ?? 1, pageSize)
             };
+
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Topic.Forum.Title)
+            {
+                RouteValues = new { id = vm.Topic.Forum.Id}
+            };
+            var childNode2 = new MvcBreadcrumbNode("Topic", "Home", "ViewData.Title")
+            {
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+
+            ViewData["BreadcrumbNode"] = childNode2;
 
             return View(vm);
         }
@@ -68,9 +97,22 @@ namespace ForumDemo.Controllers
         {
             CreateTopicViewModel vm = new CreateTopicViewModel()
             {
-                ForumId = id,
-                ForumTitle = await _forumRepository.GetTitleById(id)
+                Forum = await _forumRepository.GetById(id)
             };
+
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Forum.Title)
+            {
+                RouteValues = new { id = vm.Forum.Id }
+            };
+            var childNode2 = new MvcBreadcrumbNode("CreateTopic", "Home", "Creating topic")
+            {
+                RouteValues = new { id = vm.Forum.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+
+            ViewData["BreadcrumbNode"] = childNode2;
 
             return View(vm);
         }
@@ -85,7 +127,7 @@ namespace ForumDemo.Controllers
             {
                 Title = vm.Title,
                 Description = vm.Description,
-                Forum = await _forumRepository.GetById(vm.ForumId),
+                Forum = await _forumRepository.GetById(vm.Forum.Id),
                 Posts = new List<Post>
                 {
                     new Post {
@@ -111,9 +153,28 @@ namespace ForumDemo.Controllers
         {
             ReplyViewModel vm = new ReplyViewModel()
             {
-                TopicId = id,
-                TopicTitle = await _topicRepository.GetTitleById(id)
+                Topic =  await _topicRepository.GetById(id)
             };
+
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Topic.Forum.Title)
+            {
+                RouteValues = new { id = vm.Topic.Forum.Id }
+            };
+            var childNode2 = new MvcBreadcrumbNode("Topic", "Home", vm.Topic.Title)
+            {
+                RouteValues = new { id = vm.Topic.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+            var childNode3 = new MvcBreadcrumbNode("Reply", "Home", "Reply")
+            {
+                RouteValues = new { id = vm.Topic.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode2
+            };
+
+            ViewData["BreadcrumbNode"] = childNode3;
 
             return View(vm);
         }
@@ -127,20 +188,63 @@ namespace ForumDemo.Controllers
             Post post = new Post()
             {
                 Contents = vm.Contents,
-                Topic = await _topicRepository.GetById(vm.TopicId),
-                User = user
+                Topic = await _topicRepository.GetById(vm.Topic.Id),
+                User = user,
+                Created = DateTime.Now,
+                Updated = DateTime.Now
             };
 
             await _postRepository.Create(post);
             await _userRepository.CountPost(user.Id);
 
-            return RedirectToAction("Topic", new { id = vm.TopicId });
+            return RedirectToAction("Topic", new { id = vm.Topic.Id });
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Authorize]
+        public async Task<IActionResult> EditPost(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            Post post = await _postRepository.GetById(id);
+
+            EditPostViewModel vm = new EditPostViewModel()
+            {
+                Post = await _postRepository.GetById(id),
+                Contents = post.Contents
+            };
+
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Post.Topic.Forum.Title)
+            {
+                RouteValues = new { id = vm.Post.Topic.Forum.Id }
+            };
+            var childNode2 = new MvcBreadcrumbNode("Topic", "Home", vm.Post.Topic.Title)
+            {
+                RouteValues = new { id = vm.Post.Topic.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+            var childNode3 = new MvcBreadcrumbNode("Editing post", "Home", "Editing post")
+            {
+                Parent = childNode2
+            };
+
+            ViewData["BreadcrumbNode"] = childNode3;
+
+            return View(vm);
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EditPost(EditPostViewModel vm)
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+
+            Post post = await _postRepository.GetById(vm.Post.Id);
+            post.Contents = vm.Contents;
+
+            await _postRepository.Update(post);
+
+            return RedirectToAction("Topic", new { id = vm.Post.Topic.Id });
+        }
+
     }
 }

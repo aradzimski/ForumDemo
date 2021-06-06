@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ForumDemo.ViewModels.Main
 {
-    public class ReplyViewModel
+    public class EditPostViewModel
     {
-        public Topic Topic { get; set; }
+        public Post Post { get; set; }
 
         [Display(Name = "Post contents")]
         [Required]

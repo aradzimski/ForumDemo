@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using SmartBreadcrumbs.Attributes;
 
 namespace ForumDemo.Areas.Identity.Pages.Account.Manage
 {
+    [Breadcrumb("Delete personal data")]
     public class DeletePersonalDataModel : PageModel
     {
         private readonly UserManager<User> _userManager;

@@ -25,12 +25,26 @@ namespace ForumDemo.Repositories
             return result;
         }
 
+        public async Task<Post> GetById(int id)
+        {
+            var result = await _dbContext.Posts
+                .Where(x => x.Id == id)
+                .Include(x => x.Topic)
+                .ThenInclude(topic => topic.Forum)
+                .SingleOrDefaultAsync();
+
+            return result;
+        }
+
         public async Task Create(Post post)
         {
-            post.Created = DateTime.Now;
-            post.Updated = DateTime.Now;
-
             await _dbContext.Posts.AddAsync(post);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Update(Post post)
+        {
+            _dbContext.Posts.Update(post);
             await _dbContext.SaveChangesAsync();
         }
     }
