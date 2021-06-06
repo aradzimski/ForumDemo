@@ -37,6 +37,12 @@ namespace ForumDemo.Controllers
             _postRepository = postRepository;
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
         [DefaultBreadcrumb("ForumDemo")]
         public async Task<IActionResult> Index()
         {
@@ -194,10 +200,51 @@ namespace ForumDemo.Controllers
             return RedirectToAction("Topic", new { id = vm.Topic.Id });
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [Authorize]
+        public async Task<IActionResult> EditPost(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            Post post = await _postRepository.GetById(id);
+
+            EditPostViewModel vm = new EditPostViewModel()
+            {
+                Post = await _postRepository.GetById(id),
+                Contents = post.Contents
+            };
+
+            // Manually set breadcrumb nodes
+            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Post.Topic.Forum.Title)
+            {
+                RouteValues = new { id = vm.Post.Topic.Forum.Id }
+            };
+            var childNode2 = new MvcBreadcrumbNode("Topic", "Home", vm.Post.Topic.Title)
+            {
+                RouteValues = new { id = vm.Post.Topic.Id },
+                OverwriteTitleOnExactMatch = true,
+                Parent = childNode1
+            };
+            var childNode3 = new MvcBreadcrumbNode("Editing post", "Home", "Editing post")
+            {
+                Parent = childNode2
+            };
+
+            ViewData["BreadcrumbNode"] = childNode3;
+
+            return View(vm);
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EditPost(EditPostViewModel vm)
+        {
+            User user = await _userManager.GetUserAsync(HttpContext.User);
+
+            Post post = await _postRepository.GetById(vm.Post.Id);
+            post.Contents = vm.Contents;
+
+            await _postRepository.Update(post);
+
+            return RedirectToAction("Topic", new { id = vm.Post.Topic.Id });
+        }
+
     }
 }
