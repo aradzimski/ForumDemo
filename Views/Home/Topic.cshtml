@@ -29,7 +29,7 @@
 </div>
 
 @{
-    await Html.RenderPartialAsync("_Pagination", Model);
+    await Html.RenderPartialAsync("_PostPagination", Model);
 }
 
 <div class="posts-container">
@@ -61,5 +61,5 @@
 </div>
 
 @{
-    await Html.RenderPartialAsync("_Pagination", Model);
+    await Html.RenderPartialAsync("_PostPagination", Model);
 }
