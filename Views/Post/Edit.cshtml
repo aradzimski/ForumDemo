@@ -4,9 +4,9 @@
     ViewData["Title"] = "Editing post - " + Model.Post.Topic.Title;
 }
 
-<a asp-controller="Home" asp-action="Topic" asp-route-id="@Model.Post.Topic.Id">Back to topic</a>
+<a asp-controller="Topic" asp-action="Index" asp-route-id="@Model.Post.Topic.Id">Back to topic</a>
 
-<form asp-action="EditPost" method="post">
+<form asp-action="Edit" method="post">
     <input hidden asp-for="Post.Id" />
     <input hidden asp-for="Post.Topic.Id" />
     <label asp-for="Contents"></label>
