@@ -19,14 +19,14 @@
         @if (User.Identity.IsAuthenticated)
         {
             <li class="topic-button-container">
-                <a class="topic-button-reply" asp-controller="Home" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
+                <a class="topic-button-reply" asp-controller="Topic" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
             </li>
         }
     </ul>
 </div>
 
 @{
-    await Html.RenderPartialAsync("_TopicPagination", Model);
+    await Html.RenderPartialAsync("_Pagination", Model);
 }
 
 <div class="posts-container">
@@ -49,7 +49,7 @@
                 <div class="post-footer">
                     @if (User.Identity.IsAuthenticated && post.User.UserName == User.Identity.Name)
                     {
-                        <a class="post-footer-button" asp-controller="Home" asp-action="EditPost" asp-route-id="@post.Id">Edit</a>
+                        <a class="post-footer-button" asp-controller="Post" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
                     }
                 </div>
             </div>
@@ -58,5 +58,5 @@
 </div>
 
 @{
-    await Html.RenderPartialAsync("_TopicPagination", Model);
+    await Html.RenderPartialAsync("_Pagination", Model);
 }

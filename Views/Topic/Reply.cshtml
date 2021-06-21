@@ -4,7 +4,7 @@
     ViewData["Title"] = "Reply - " + Model.Topic.Title;
 }
 
-<a asp-controller="Home" asp-action="Topic" asp-route-id="@Model.Topic.Id">Back to topic</a>
+<a asp-controller="Topic" asp-action="Index" asp-route-id="@Model.Topic.Id">Back to topic</a>
 
 <form asp-action="Reply" method="post">
     <input hidden asp-for="Topic.Id" />

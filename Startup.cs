@@ -81,9 +81,6 @@ namespace ForumDemo
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-                endpoints.MapControllerRoute(
-                    name: "postpagination",
-                    pattern: "{controller=Home}/{action=Topic}/{id}/page/{page?}");
                 endpoints.MapRazorPages();
             });
         }
