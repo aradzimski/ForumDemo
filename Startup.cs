@@ -80,9 +80,7 @@ namespace ForumDemo
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllerRoute(
                     name: "postpagination",
                     pattern: "{controller=Home}/{action=Topic}/{id}/page/{page?}");

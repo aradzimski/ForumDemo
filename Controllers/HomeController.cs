@@ -53,17 +53,6 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        [Breadcrumb("ViewData.Title")]
-        public async Task<IActionResult> Forum(int id)
-        {
-            ForumViewModel vm = new ForumViewModel()
-            {
-                Forum = await _forumRepository.GetByIdWithTopics(id)
-            };
-
-            return View(vm);
-        }
-
         public async Task<IActionResult> Topic(int id, int? page)
         {
             // Pagination
@@ -92,61 +81,7 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        [Authorize]
-        public async Task<IActionResult> CreateTopic(int id)
-        {
-            CreateTopicViewModel vm = new CreateTopicViewModel()
-            {
-                Forum = await _forumRepository.GetById(id)
-            };
-
-            // Manually set breadcrumb nodes
-            var childNode1 = new MvcBreadcrumbNode("Forum", "Home", vm.Forum.Title)
-            {
-                RouteValues = new { id = vm.Forum.Id }
-            };
-            var childNode2 = new MvcBreadcrumbNode("CreateTopic", "Home", "Creating topic")
-            {
-                RouteValues = new { id = vm.Forum.Id },
-                OverwriteTitleOnExactMatch = true,
-                Parent = childNode1
-            };
-
-            ViewData["BreadcrumbNode"] = childNode2;
-
-            return View(vm);
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> CreateTopic(CreateTopicViewModel vm)
-        {
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-
-            Topic topic = new Topic()
-            {
-                Title = vm.Title,
-                Description = vm.Description,
-                Forum = await _forumRepository.GetById(vm.Forum.Id),
-                Posts = new List<Post>
-                {
-                    new Post {
-                        Contents = vm.Contents,
-                        User = user,
-                        Created = DateTime.Now,
-                        Updated = DateTime.Now
-                    }
-                },
-                User = user,
-                Created = DateTime.Now,
-                Updated = DateTime.Now
-            };
-
-            int topic_id = await _topicRepository.Create(topic);
-            await _userRepository.CountPost(user.Id);
-
-            return RedirectToAction("Topic", new { id = topic_id });
-        }
+        
 
         [Authorize]
         public async Task<IActionResult> Reply(int id)
