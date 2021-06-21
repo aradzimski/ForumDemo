@@ -10,6 +10,7 @@ using SmartBreadcrumbs.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ForumDemo.Controllers
@@ -30,7 +31,8 @@ namespace ForumDemo.Controllers
             _forumRepository = forumRepository;
             _topicRepository = topicRepository;
         }
-        [Route("forum/{id}")]
+
+        [Route("forum/{id}/{urltitle}")]
         [Breadcrumb("ViewData.Title")]
         public async Task<IActionResult> Index(int id)
         {
@@ -42,7 +44,7 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        [Route("forum/{id}/add")]
+        [Route("forum/{id}/{urltitle}/add")]
         [Authorize]
         public async Task<IActionResult> Add(int id)
         {
@@ -54,11 +56,11 @@ namespace ForumDemo.Controllers
             // Manually set breadcrumb nodes
             var childNode1 = new MvcBreadcrumbNode("Index", "Forum", vm.Forum.Title)
             {
-                RouteValues = new { id = vm.Forum.Id }
+                RouteValues = new { id = vm.Forum.Id, urltitle = vm.Forum.UrlTitle }
             };
             var childNode2 = new MvcBreadcrumbNode("Add", "Forum", "Creating topic")
             {
-                RouteValues = new { id = vm.Forum.Id },
+                RouteValues = new { id = vm.Forum.Id, urltitle = vm.Forum.UrlTitle },
                 OverwriteTitleOnExactMatch = true,
                 Parent = childNode1
             };
@@ -68,7 +70,7 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        [Route("forum/{id}/add")]
+        [Route("forum/{id}/{urltitle}/add")]
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(CreateTopicViewModel vm)
@@ -78,6 +80,7 @@ namespace ForumDemo.Controllers
             Topic topic = new Topic()
             {
                 Title = vm.Title,
+                UrlTitle = vm.Title.Replace(" ", "-"),
                 Description = vm.Description,
                 Forum = await _forumRepository.GetById(vm.Forum.Id),
                 Posts = new List<Post>
@@ -97,7 +100,7 @@ namespace ForumDemo.Controllers
             int topic_id = await _topicRepository.Create(topic);
             await _userRepository.CountPost(user.Id);
 
-            return RedirectToAction("Index", "Topic", new { id = topic_id });
+            return RedirectToAction("Index", "Topic", new { id = topic_id, urltitle = topic.UrlTitle });
         }
     }
 }

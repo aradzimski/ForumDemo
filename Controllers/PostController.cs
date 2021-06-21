@@ -40,11 +40,11 @@ namespace ForumDemo.Controllers
             // Manually set breadcrumb nodes
             var childNode1 = new MvcBreadcrumbNode("Index", "Forum", vm.Post.Topic.Forum.Title)
             {
-                RouteValues = new { id = vm.Post.Topic.Forum.Id }
+                RouteValues = new { id = vm.Post.Topic.Forum.Id, urltitle = vm.Post.Topic.Forum.UrlTitle }
             };
             var childNode2 = new MvcBreadcrumbNode("Index", "Topic", vm.Post.Topic.Title)
             {
-                RouteValues = new { id = vm.Post.Topic.Id },
+                RouteValues = new { id = vm.Post.Topic.Id, urltitle = vm.Post.Topic.UrlTitle },
                 OverwriteTitleOnExactMatch = true,
                 Parent = childNode1
             };
@@ -70,7 +70,7 @@ namespace ForumDemo.Controllers
 
             await _postRepository.Update(post);
 
-            return RedirectToAction("Index", "Topic", new { id = vm.Post.Topic.Id });
+            return RedirectToAction("Index", "Topic", new { id = vm.Post.Topic.Id, urltitle = vm.Post.Topic.UrlTitle });
         }
     }
 }

@@ -29,8 +29,8 @@ namespace ForumDemo.Controllers
             _topicRepository = topicRepository;
             _postRepository = postRepostiory;
         }
-        [Route("topic/{id}")]
-        [Route("topic/{id}/page/{page}")]
+        [Route("topic/{id}/{urltitle}")]
+        [Route("topic/{id}/{urltitle}/page/{page}")]
         public async Task<IActionResult> Index(int id, int? page)
         {
             // Pagination
@@ -46,7 +46,7 @@ namespace ForumDemo.Controllers
             // Manually set breadcrumb nodes
             var childNode1 = new MvcBreadcrumbNode("Index", "Forum", vm.Topic.Forum.Title)
             {
-                RouteValues = new { id = vm.Topic.Forum.Id }
+                RouteValues = new { id = vm.Topic.Forum.Id, urltitle = vm.Topic.Forum.UrlTitle }
             };
             var childNode2 = new MvcBreadcrumbNode("Index", "Topic", "ViewData.Title")
             {
@@ -59,7 +59,7 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        [Route("topic/{id}/reply")]
+        [Route("topic/{id}/{urltitle}/reply")]
         [Authorize]
         public async Task<IActionResult> Reply(int id)
         {
@@ -71,17 +71,17 @@ namespace ForumDemo.Controllers
             // Manually set breadcrumb nodes
             var childNode1 = new MvcBreadcrumbNode("Index", "Forum", vm.Topic.Forum.Title)
             {
-                RouteValues = new { id = vm.Topic.Forum.Id }
+                RouteValues = new { id = vm.Topic.Forum.Id, urltitle = vm.Topic.Forum.UrlTitle }
             };
             var childNode2 = new MvcBreadcrumbNode("Index", "Topic", vm.Topic.Title)
             {
-                RouteValues = new { id = vm.Topic.Id },
+                RouteValues = new { id = vm.Topic.Id, urltitle = vm.Topic.UrlTitle },
                 OverwriteTitleOnExactMatch = true,
                 Parent = childNode1
             };
             var childNode3 = new MvcBreadcrumbNode("Reply", "Topic", "Reply")
             {
-                RouteValues = new { id = vm.Topic.Id },
+                RouteValues = new { id = vm.Topic.Id, urltitle = vm.Topic.UrlTitle },
                 OverwriteTitleOnExactMatch = true,
                 Parent = childNode2
             };
@@ -91,7 +91,7 @@ namespace ForumDemo.Controllers
             return View(vm);
         }
 
-        [Route("topic/{id}/reply")]
+        [Route("topic/{id}/{urltitle}/reply")]
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Reply(ReplyViewModel vm)
@@ -110,7 +110,7 @@ namespace ForumDemo.Controllers
             await _postRepository.Create(post);
             await _userRepository.CountPost(user.Id);
 
-            return RedirectToAction("Index", "Topic", new { id = vm.Topic.Id });
+            return RedirectToAction("Index", "Topic", new { id = vm.Topic.Id, urltitle = vm.Topic.UrlTitle });
         }
     }
 }

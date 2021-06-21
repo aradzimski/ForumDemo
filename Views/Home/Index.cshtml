@@ -10,7 +10,7 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="Forum" asp-action="Index" asp-route-id="@forum.Id">@forum.Title</a>
+                    <a asp-controller="Forum" asp-action="Index" asp-route-id="@forum.Id" asp-route-urltitle="@forum.UrlTitle">@forum.Title</a>
                 </td>
             </tr>
         }

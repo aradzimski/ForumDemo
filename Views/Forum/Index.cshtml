@@ -6,7 +6,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <a asp-controller="Forum" asp-action="Add" asp-route-id="@Model.Forum.Id">Create topic</a>
+    <a asp-controller="Forum" asp-action="Add" asp-route-id="@Model.Forum.Id" asp-route-urltitle="@Model.Forum.UrlTitle">Create topic</a>
 }
 
 <table class="table table-hover">
@@ -15,7 +15,7 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="Topic" asp-action="Index" asp-route-id="@topic.Id">@topic.Title</a>
+                    <a asp-controller="Topic" asp-action="Index" asp-route-id="@topic.Id" asp-route-urltitle="@topic.UrlTitle">@topic.Title</a>
                 </td>
             </tr>
         }

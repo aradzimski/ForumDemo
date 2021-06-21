@@ -19,7 +19,7 @@
         @if (User.Identity.IsAuthenticated)
         {
             <li class="topic-button-container">
-                <a class="topic-button-reply" asp-controller="Topic" asp-action="Reply" asp-route-id="@Model.Topic.Id">Reply</a>
+                <a class="topic-button-reply" asp-controller="Topic" asp-action="Reply" asp-route-id="@Model.Topic.Id" asp-route-urltitle="@Model.Topic.UrlTitle">Reply</a>
             </li>
         }
     </ul>

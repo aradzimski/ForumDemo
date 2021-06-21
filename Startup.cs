@@ -81,6 +81,11 @@ namespace ForumDemo
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(
+                    name: "forum",
+                    pattern: "forum/{id}/{urltitle}",
+                    defaults: new { controller = "Forum", action = "Index" }
+                    );
                 endpoints.MapRazorPages();
             });
         }
