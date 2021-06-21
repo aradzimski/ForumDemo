@@ -4,9 +4,9 @@
     ViewData["Title"] = "Creating topic - " + Model.Forum.Title;
 }
 
-<a asp-controller="Home" asp-action="Forum" asp-route-id="@Model.Forum.Id">Back to forum</a>
+<a asp-controller="Forum" asp-action="Index" asp-route-id="@Model.Forum.Id" asp-route-urltitle="@Model.Forum.UrlTitle">Back to forum</a>
 
-<form asp-action="CreateTopic" method="post">
+<form asp-action="Add" method="post">
     <input hidden asp-for="Forum.Id" />
     <label asp-for="Title"></label>
     <input asp-for="Title"/>

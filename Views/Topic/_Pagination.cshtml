@@ -6,8 +6,10 @@
         @if (Model.Posts.HasPreviousPage == true)
         {
             <li class="topic-pagination-button">
-                <a asp-action="Topic"
+                <a asp-controller="Topic"
+                   asp-action="Index"
                    asp-route-id="@Model.Topic.Id"
+                   asp-route-urltitle="@Model.Topic.UrlTitle"
                    asp-route-page="1">
                     &lt;&lt;
                 </a>
@@ -19,8 +21,10 @@
         @if (Model.Posts.HasPreviousPage == true)
         {
             <li class="topic-pagination-button">
-                <a asp-action="Topic"
+                <a asp-controller="Topic"
+                   asp-action="Index"
                    asp-route-id="@Model.Topic.Id"
+                   asp-route-urltitle="@Model.Topic.UrlTitle"
                    asp-route-page="@(Model.Posts.PageIndex - 1)">
                     Previous
                 </a>
@@ -34,8 +38,10 @@
             if (Model.Posts.PageIndex - previous_page_button >= 1)
             {
                 <li class="topic-pagination-button">
-                    <a asp-action="Topic"
+                    <a asp-controller="Topic"
+                       asp-action="Index"
                        asp-route-id="@Model.Topic.Id"
+                       asp-route-urltitle="@Model.Topic.UrlTitle"
                        asp-route-page="@(Model.Posts.PageIndex - previous_page_button)">
                         @(Model.Posts.PageIndex - previous_page_button)
                     </a>
@@ -47,8 +53,10 @@
 
         <li class="topic-pagination-button">
             <a class="current-page"
-               asp-action="Topic"
+               asp-controller="Topic"
+               asp-action="Index"
                asp-route-id="@Model.Topic.Id"
+               asp-route-urltitle="@Model.Topic.UrlTitle"
                asp-route-page="@Model.Posts.PageIndex">
                 @Model.Posts.PageIndex
             </a>
@@ -61,8 +69,10 @@
             if (Model.Posts.PageIndex + next_page_button <= Model.Posts.TotalPages)
             {
                 <li class="topic-pagination-button">
-                    <a asp-action="Topic"
+                    <a asp-controller="Topic"
+                       asp-action="Index"
                        asp-route-id="@Model.Topic.Id"
+                       asp-route-urltitle="@Model.Topic.UrlTitle"
                        asp-route-page="@(Model.Posts.PageIndex + next_page_button)">
                         @(Model.Posts.PageIndex + next_page_button)
                     </a>
@@ -76,8 +86,10 @@
         @if (Model.Posts.HasNextPage == true)
         {
             <li class="topic-pagination-button">
-                <a asp-action="Topic"
+                <a asp-controller="Topic"
+                   asp-action="Index"
                    asp-route-id="@Model.Topic.Id"
+                   asp-route-urltitle="@Model.Topic.UrlTitle"
                    asp-route-page="@(Model.Posts.PageIndex + 1)">
                     Next
                 </a>
@@ -89,8 +101,10 @@
         @if (Model.Posts.HasNextPage == true)
         {
             <li class="topic-pagination-button">
-                <a asp-action="Topic"
+                <a asp-controller="Topic"
+                   asp-action="Index"
                    asp-route-id="@Model.Topic.Id"
+                   asp-route-urltitle="@Model.Topic.UrlTitle"
                    asp-route-page="@Model.Posts.TotalPages">
                     &gt;&gt;
                 </a>
