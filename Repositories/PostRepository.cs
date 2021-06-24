@@ -12,6 +12,7 @@ namespace ForumDemo.Repositories
     {
         private readonly ApplicationDbContext _dbContext;
 
+        public PostRepository() { }
         public PostRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -25,7 +26,7 @@ namespace ForumDemo.Repositories
             return result;
         }
 
-        public async Task<Post> GetById(int id)
+        public virtual async Task<Post> GetById(int id)
         {
             var result = await _dbContext.Posts
                 .Where(x => x.Id == id)

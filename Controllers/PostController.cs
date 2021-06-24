@@ -16,12 +16,10 @@ namespace ForumDemo.Controllers
     public class PostController : Controller
     {
         private readonly ILogger<PostController> _logger;
-        private readonly UserManager<User> _userManager;
         private readonly PostRepository _postRepository;
-        public PostController(ILogger<PostController> logger, UserManager<User> userManager, PostRepository postRepository)
+        public PostController(ILogger<PostController> logger, PostRepository postRepository)
         {
             _logger = logger;
-            _userManager = userManager;
             _postRepository = postRepository;
         }
 
@@ -30,6 +28,11 @@ namespace ForumDemo.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             Post post = await _postRepository.GetById(id);
+
+            if (post is null)
+            {
+                return NotFound();
+            }
 
             EditPostViewModel vm = new EditPostViewModel()
             {
@@ -63,8 +66,6 @@ namespace ForumDemo.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditPostViewModel vm)
         {
-            User user = await _userManager.GetUserAsync(HttpContext.User);
-
             Post post = await _postRepository.GetById(vm.Post.Id);
             post.Contents = vm.Contents;
 
