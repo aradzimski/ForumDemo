@@ -17,7 +17,7 @@ namespace ForumDemo.Controllers
     {
         private readonly ILogger<PostController> _logger;
         private readonly PostRepository _postRepository;
-        public PostController(ILogger<PostController> logger, UserManager<User> userManager, PostRepository postRepository)
+        public PostController(ILogger<PostController> logger, PostRepository postRepository)
         {
             _logger = logger;
             _postRepository = postRepository;
