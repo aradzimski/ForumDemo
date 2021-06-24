@@ -29,6 +29,11 @@ namespace ForumDemo.Controllers
         {
             Post post = await _postRepository.GetById(id);
 
+            if (post is null)
+            {
+                return NotFound();
+            }
+
             EditPostViewModel vm = new EditPostViewModel()
             {
                 Post = await _postRepository.GetById(id),
