@@ -20,7 +20,6 @@ namespace ForumDemo.Controllers
         public PostController(ILogger<PostController> logger, UserManager<User> userManager, PostRepository postRepository)
         {
             _logger = logger;
-            _userManager = userManager;
             _postRepository = postRepository;
         }
 
